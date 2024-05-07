@@ -22,6 +22,17 @@ const day3times = ["07:30"];
 // Day 4-8 outlooks are issued at 0900 UTC
 const day4to8times = ["09:00"];
 
+function isTomorrow(date) {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  return (
+    date.getDate() === tomorrow.getDate() &&
+    date.getMonth() === tomorrow.getMonth() &&
+    date.getFullYear() === tomorrow.getFullYear()
+  );
+}
+
 function updateCountdowns() {
   const currentTime = new Date();
   const currentUTCTime = currentTime.toISOString().slice(11, 16);
@@ -226,8 +237,14 @@ function updateCountdowns() {
   const day3localDate = new Date(day3date);
   const day4to8localDate = new Date(day4to8date);
 
+  // Check if the local time is tomorrow
+  const day1IsTomorrowLocal = isTomorrow(day1localDate);
+  const day2IsTomorrowLocal = isTomorrow(day2localDate);
+  const day3IsTomorrowLocal = isTomorrow(day3localDate);
+  const day4to8IsTomorrowLocal = isTomorrow(day4to8localDate);
+
   day1localTime.textContent =
-    (day1InFuture ? "Tomorrow at " : "") +
+    (day1IsTomorrowLocal ? "Tomorrow at " : "") +
     day1localDate.toLocaleTimeString("en-US", {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       hour: "2-digit",
@@ -235,7 +252,7 @@ function updateCountdowns() {
     });
 
   day2localTime.textContent =
-    (day2InFuture ? "Tomorrow at " : "") +
+    (day2IsTomorrowLocal ? "Tomorrow at " : "") +
     day2localDate.toLocaleTimeString("en-US", {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       hour: "2-digit",
@@ -243,7 +260,7 @@ function updateCountdowns() {
     });
 
   day3localTime.textContent =
-    (day3InFuture ? "Tomorrow at " : "") +
+    (day3IsTomorrowLocal ? "Tomorrow at " : "") +
     day3localDate.toLocaleTimeString("en-US", {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       hour: "2-digit",
@@ -251,7 +268,7 @@ function updateCountdowns() {
     });
 
   day4to8localTime.textContent =
-    (day4to8InFuture ? "Tomorrow at " : "") +
+    (day4to8IsTomorrowLocal ? "Tomorrow at " : "") +
     day4to8localDate.toLocaleTimeString("en-US", {
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       hour: "2-digit",
